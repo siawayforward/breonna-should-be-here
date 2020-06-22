@@ -11,5 +11,8 @@ search_terms = ['BreonnaTaylor', 'Breonna Taylor', 'BREONNA TAYLOR']
 
 
 Breonna = Angel('breonna-updates.txt')
-for line in Breonna.updates:
-    print(line, '\n')
+print(Breonna.name)
+print(Breonna.ascension_date)
+print(Breonna.days_since)
+print(Breonna.hashtags)
+
