@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 import tweepy
 import breonna
 
@@ -23,14 +24,18 @@ class Breonna_API:
         self.api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 
     def tweet_and_retweet(self):
-        now = 0
-        end = 86400
-        while now <= end:
+        start = 0
+        end = 86400 #total seconds in a day
+        current = datetime.now()
+        #restart clock everyday
+        if current.hour == 0 and current.minute == 0 and current.second == 0:
+            start = 0
+        while start <= end:
             for tweet in tweepy.Cursor(self.api.search, self.search).items(self.tweet_ct):
                 if not tweet.favorited:
                     try:
                         print('Tweet Liked and Retweeted')
-                        now += 72
+                        start += 72
                         tweet.favorite()
                         tweet.retweet()
                         time.sleep(72) #to reach 1200 per day at most because we want to post 1200 tweets too
