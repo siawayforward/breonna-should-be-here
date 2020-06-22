@@ -8,7 +8,7 @@ class Breonna_API:
     def __init__(self, **kwargs):
         self.define_API(**kwargs)
         self.me = self.api.me()
-        self.search = ['BreonnaTaylor', 'Breonna Taylor', 'BREONNA TAYLOR']
+        self.search = kwargs['search']
         self.tweet_ct = 500
        
     def define_API(self, **kwargs):
