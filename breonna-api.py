@@ -62,4 +62,7 @@ class Breonna_API:
             print(follower.name)
 
 
-
+if __name__ == '__main__':
+    login = Breonna_API()
+    login.post_scheduled_tweets()
+    login.tweet_and_retweet()
