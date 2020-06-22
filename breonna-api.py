@@ -30,19 +30,21 @@ class Breonna_API:
         #restart clock everyday
         if current.hour == 0 and current.minute == 0 and current.second == 0:
             start = 0
-        while start <= end:
-            for tweet in tweepy.Cursor(self.api.search, self.search).items(self.tweet_ct):
-                if not tweet.favorited:
-                    try:
-                        print('Tweet Liked and Retweeted')
-                        start += 72
-                        tweet.favorite()
-                        tweet.retweet()
-                        time.sleep(72) #to reach 1200 per day at most because we want to post 1200 tweets too
-                    except tweepy.TweepError as e: pass
-                    except StopIteration:
-                        break
-
+        try:
+            while start <= end:
+                for tweet in tweepy.Cursor(self.api.search, self.search).items(self.tweet_ct):
+                    if not tweet.favorited:
+                        try:
+                            print('Tweet Liked and Retweeted')
+                            start += 72
+                            tweet.favorite()
+                            tweet.retweet()
+                            time.sleep(72) #to reach 1200 per day at most because we want to post 1200 tweets too
+                        except tweepy.TweepError as e: pass
+                        except StopIteration:
+                            break
+        except start > 86400: pass
+                                   
     def post_scheduled_tweets(self):
         for tweet in breonna.status_updates:
             try:
