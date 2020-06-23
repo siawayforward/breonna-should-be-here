@@ -6,8 +6,8 @@ death_str = death.strftime('%B %d, %Y')
 days_since_death = (date.today() - death).days
 
 Breonna = Angel('breonna-updates.txt')
-print(Breonna.name)
-print(Breonna.ascension_date)
-print(Breonna.hashtags)
-print(Breonna.updates)
+print('name:', Breonna.name)
+print('date:', Breonna.ascension_date)
+print('tags:', Breonna.hashtags)
+print('search terms:', Breonna.search)
 
