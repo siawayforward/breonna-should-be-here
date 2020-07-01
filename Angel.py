@@ -9,8 +9,8 @@ class Angel:
             with open(data_file, 'r') as file:
                 for line in file:
                     self.contents.append(line[:-1])
-        except: 
             file.close()
+        except: pass
         #extract attributes from contents of file
         self.get_file_contents()         
 
