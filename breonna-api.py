@@ -1,27 +1,31 @@
 import time
 from datetime import datetime
 import tweepy
-import breonna
+from Angel import Angel
 
 class Breonna_API:
     
-    def __init__(self, **kwargs):
-        self.define_API(**kwargs)
+    def __init__(self, cred_file, angel_file=None):
+        if angel_file: self.Breonna = Angel(angel_file)
+        self.define_API(cred_file)
         self.me = self.api.me()
-        self.search = kwargs['search']
+        self.search = self.Breonna.search
         self.tweet_ct = 500
        
-    def define_API(self, **kwargs):
+    def define_API(self, cred_file):
         #add API auth keys in order
-        self.consumer_key = kwargs['c_key']
-        self.consumer_secret = kwargs['c_secret']
-        self.access_key = kwargs['a_key']
-        self.access_tkn_secret = kwargs['a_secret']
+        try:
+            with open(cred_file, 'r') as file:
+                self.consumer_key = file.readline().split(',')[1].strip()
+                self.consumer_secret = file.readline().split(',')[1].strip()
+                self.access_key = file.readline().split(',')[1].strip()
+                self.access_tkn_secret = file.readline().split(',')[1].strip()
+        except: pass
 
         #define twitter API and authorization params
-        self.auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-        self.auth.set_access_token(access_key, access_tkn_secret)
-        self.api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
+        self.auth = tweepy.OAuthHandler(self.consumer_key, self.consumer_secret)
+        self.auth.set_access_token(self.access_key, self.access_tkn_secret)
+        self.api = tweepy.API(self.auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 
     def tweet_and_retweet(self):
         start = 0
@@ -35,8 +39,8 @@ class Breonna_API:
                 for tweet in tweepy.Cursor(self.api.search, self.search).items(self.tweet_ct):
                     if not tweet.favorited:
                         try:
-                            print('Tweet Liked and Retweeted')
                             start += 72
+                            print('Tweet Liked and Retweeted', start)
                             tweet.favorite()
                             tweet.retweet()
                             time.sleep(72) #to reach 1200 per day at most because we want to post 1200 tweets too
@@ -46,10 +50,10 @@ class Breonna_API:
         except start > 86400: pass
                                    
     def post_scheduled_tweets(self):
-        for tweet in breonna.status_updates:
+        for tweet in self.Breonna.status_updates:
             try:
                 print('Tweet posted')
-                self.api.update_status(tweet + breonna.hashtags)
+                self.api.update_status(tweet + self.Breonna.hashtags)
                 time.sleep(72)
             except tweepy.TweepError as e: pass
             except StopIteration:
@@ -65,6 +69,6 @@ class Breonna_API:
 
 
 if __name__ == '__main__':
-    login = Breonna_API()
+    login = Breonna_API('keys.txt', 'breonna-updates.txt')
     login.post_scheduled_tweets()
     login.tweet_and_retweet()
