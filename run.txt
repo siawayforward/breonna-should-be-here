@@ -1,0 +1,4 @@
+API key, s0P4T1nnucoi7QtfQxXvKlBZH
+API secret key, 2Bm4GosxwEqzLNNFK6GRF16nmZXL9lbfY8DGHzZre3QQB60afZ
+Access token, 1274856009899466752-d6zUtNZqdaUwsa08f01jncBpWYBdJL
+Access token secret, 60toIWo37f8PLXy6msQmk6uvqXjOirUHA4evihFfzQzbb
