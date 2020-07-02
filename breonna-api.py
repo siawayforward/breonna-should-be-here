@@ -69,6 +69,6 @@ class Breonna_API:
 
 
 if __name__ == '__main__':
-    login = Breonna_API('keys.txt', 'breonna-updates.txt')
+    login = Breonna_API('run.txt', 'breonna-updates.txt')
     login.post_scheduled_tweets()
     login.tweet_and_retweet()
