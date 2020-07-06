@@ -44,7 +44,7 @@ class Breonna_API:
                             tweet.favorite()
                             tweet.retweet()
                             time.sleep(72) #to reach 1200 per day at most because we want to post 1200 tweets too
-                        except tweepy.TweepError as e: pass
+                        except tweepy.TweepError as e: break
                         except StopIteration:
                             break
         except start > 86400: pass
@@ -55,7 +55,7 @@ class Breonna_API:
                 print('Tweet posted')
                 self.api.update_status(tweet + self.Breonna.hashtags)
                 time.sleep(72)
-            except tweepy.TweepError as e: pass
+            except tweepy.TweepError as e: break
             except StopIteration:
                 break
 
