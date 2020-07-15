@@ -47,7 +47,7 @@ class Breonna_API:
                         except tweepy.TweepError as e: break
                         except StopIteration:
                             break
-        except start > 86400: pass
+        except start > 86400: StopIteration
                                    
     def post_scheduled_tweets(self):
         for tweet in self.Breonna.status_updates:
