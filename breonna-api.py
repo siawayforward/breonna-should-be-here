@@ -28,26 +28,21 @@ class Breonna_API:
         self.api = tweepy.API(self.auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 
     def tweet_and_retweet(self):
-        start = 0
-        end = 86400 #total seconds in a day
         current = datetime.now()
+        start = 0
         #restart clock everyday
-        if current.hour == 0 and current.minute == 0 and current.second == 0:
-            start = 0
         try:
-            while start <= end:
-                for tweet in tweepy.Cursor(self.api.search, self.search).items(self.tweet_ct):
-                    if not tweet.favorited:
-                        try:
-                            start += 72
-                            print('Tweet Liked and Retweeted', start)
-                            tweet.favorite()
-                            tweet.retweet()
-                            time.sleep(72) #to reach 1200 per day at most because we want to post 1200 tweets too
-                        except tweepy.TweepError as e: break
-                        except StopIteration:
-                            break
-        except start > 86400: StopIteration
+            for tweet in tweepy.Cursor(self.api.search, self.search).items(self.tweet_ct):
+                if not tweet.favorited and not tweet.retweeted:
+                    try:
+                        start += 72
+                        tweet.favorite()
+                        tweet.retweet()
+                    except tweepy.TweepError as e: continue
+                    except StopIteration: break
+                print('Tweet Liked and Retweeted', start)
+                time.sleep(72) #to reach 1200 per day at most because we want to post 1200 tweets too
+        except tweepy.RateLimitError as e: StopIteration
                                    
     def post_scheduled_tweets(self):
         for tweet in self.Breonna.status_updates:
